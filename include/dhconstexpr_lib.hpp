@@ -71,3 +71,16 @@ public:
     template <typename tag_key>
     using found_pair = decltype(Find<tag_key>());
 };
+
+
+template <typename T, size_t sz, class iseq = decltype(std::make_index_sequence<sz>())>
+struct gen_tuple;
+
+template <typename T, size_t sz, size_t ... indx>
+struct gen_tuple<T, sz, std::index_sequence<indx...>>
+{
+    template <size_t>
+    using T_ = T;
+
+    using tuple = std::tuple<T_<indx>...>;
+};
