@@ -39,10 +39,19 @@ struct tag_auto
     constexpr static decltype(val) value = val;
 };
 
+//this is a workaround for vs express 17 (because const char* fails for tag_auto)
+template <const char* val>
+struct char_t
+{
+	constexpr static const char* value = val;
+};
+
+
 //generic pair
 template <typename key_tag, typename val_tag>
 struct cexpr_pair
 {
+	//need to assert that key_tag and val_tag have members "key" and "val"
     using key = key_tag;
     using value = val_tag;
 };
