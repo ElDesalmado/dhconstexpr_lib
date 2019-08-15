@@ -22,27 +22,34 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
+#ifndef _TYPE_TRAITS_
 #include <type_traits>
+#endif
+
+#ifndef _TUPLE_
 #include <tuple>
+#endif
 
 //tag for typenames
 template <class T>
-struct tag_type
+struct type_t
 {
     using type = T;
 };
 
 //tag for autos
 template <auto val>
-struct tag_auto
-{
-    constexpr static decltype(val) value = val;
-};
+using auto_t = std::integral_constant<decltype(val), val>;
+
+//this is a workaround for vs express 17 (because const char* fails for auto_t)
+template <const char* val>
+using char_t = std::integral_constant<const char*, val>;
 
 //generic pair
 template <typename key_tag, typename val_tag>
 struct cexpr_pair
 {
+	//need to assert that key_tag and val_tag have members "key" and "val"
     using key = key_tag;
     using value = val_tag;
 };
