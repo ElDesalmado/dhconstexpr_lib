@@ -91,3 +91,6 @@ struct gen_tuple<T, sz, std::index_sequence<indx...>>
 
     using tuple = std::tuple<T_<indx>...>;
 };
+
+template <auto val, auto ... compare>
+inline constexpr bool is_any = ((val == compare) || ...);
