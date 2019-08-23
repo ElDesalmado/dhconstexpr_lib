@@ -49,7 +49,6 @@ using char_t = std::integral_constant<const char*, val>;
 template <typename key_tag, typename val_tag>
 struct cexpr_pair
 {
-	//need to assert that key_tag and val_tag have members "key" and "val"
     using key = key_tag;
     using value = val_tag;
 };
@@ -94,3 +93,6 @@ struct gen_tuple<T, sz, std::index_sequence<indx...>>
 
 template <auto val, auto ... compare>
 inline constexpr bool is_any = ((val == compare) || ...);
+
+template <typename ... Types>
+inline constexpr bool all_same_v = sizeof...(Types) ? (std::is_same_v<std::tuple_element_t<0, std::tuple<Types...>>, Types> && ...) : false;
