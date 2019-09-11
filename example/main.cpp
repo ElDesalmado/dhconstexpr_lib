@@ -15,6 +15,9 @@ struct abc
     }
 };
 
+void DoNothing(const char*, bool)
+{}
+
 typedef cexpr_pair<auto_t<1>, auto_t<&abc::func1>> pair_func1;
 typedef cexpr_pair<auto_t<2>, auto_t<&abc::func2>> pair_func2;
 typedef cexpr_pair<type_t<int>, auto_t<&abc::func2>> int_func2;
@@ -37,6 +40,22 @@ typedef cexpr_generic_map<
 
 int main()
 {
+	func_traits<&abc::func1>::args_count;
+	func_traits<&abc::func1>::t_return;
+	func_traits<&abc::func1>::t_class;
+	func_traits<&abc::func1>::tuple_args;
+
+	constexpr void(abc::*pFunc1)(int, double) = &abc::func1;
+
+	func_traits<pFunc1>::args_count;
+	func_traits<pFunc1>::t_return;
+	func_traits<pFunc1>::t_class;
+	func_traits<pFunc1>::tuple_args;
+
+	func_traits<&DoNothing>::args_count;
+	func_traits<&DoNothing>::t_return;
+	func_traits<&DoNothing>::t_class;
+	func_traits<&DoNothing>::tuple_args;
     abc a;
     (a.*map_funcs::found_pair<auto_t<1>>::value::value)(6, 3.28);                         // 6 3.28
 

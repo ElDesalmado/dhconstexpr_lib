@@ -96,3 +96,26 @@ inline constexpr bool is_any = ((val == compare) || ...);
 
 template <typename ... Types>
 inline constexpr bool all_same_v = sizeof...(Types) ? (std::is_same_v<std::tuple_element_t<0, std::tuple<Types...>>, Types> && ...) : false;
+
+//function traits
+
+template <auto func, class func_t = decltype(func)>
+struct func_traits;
+
+template <auto func, typename Ret, typename Cl, typename ... Args>
+struct func_traits<func, Ret(Cl::*)(Args...)>
+{
+	using t_return = Ret;
+	using t_class = Cl;
+	using tuple_args = std::tuple<Args...>;
+	constexpr static size_t args_count = sizeof...(Args);
+};
+
+template <auto func, typename Ret, typename ... Args>
+struct func_traits<func, Ret(*)(Args...)>
+{
+	using t_return = Ret;
+	using t_class = void;
+	using tuple_args = std::tuple<Args...>;
+	constexpr static size_t args_count = sizeof...(Args);
+};
