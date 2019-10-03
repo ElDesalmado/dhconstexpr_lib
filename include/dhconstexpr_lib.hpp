@@ -91,6 +91,15 @@ struct gen_tuple<T, sz, std::index_sequence<indx...>>
     using tuple = std::tuple<T_<indx>...>;
 };
 
+template <typename T, size_t sz>
+using n_tuple_t = typename gen_tuple<T, sz>::tuple;
+
+template <typename To, typename From>
+using to_type = To;
+
+template <size_t indx, typename ... types>
+using nth_type = typename std::tuple_element_t<indx, std::tuple<types...>>;
+
 template <auto val, auto ... compare>
 inline constexpr bool is_any = ((val == compare) || ...);
 
