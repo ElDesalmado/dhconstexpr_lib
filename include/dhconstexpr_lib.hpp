@@ -45,6 +45,12 @@ using auto_t = std::integral_constant<decltype(val), val>;
 template <const char* val>
 using char_t = std::integral_constant<const char*, val>;
 
+constexpr bool str_equal(const char *a, const char *b)
+{
+	return *a == *b && (*a == '\0' || str_equal(a + 1, b + 1));
+}
+
+
 //generic pair
 template <typename key_tag, typename val_tag>
 struct cexpr_pair
@@ -105,6 +111,12 @@ inline constexpr bool is_any = ((val == compare) || ...);
 
 template <typename ... Types>
 inline constexpr bool all_same_v = sizeof...(Types) ? (std::is_same_v<std::tuple_element_t<0, std::tuple<Types...>>, Types> && ...) : false;
+
+template <bool ... vals>
+constexpr inline bool dh_conjunction = (vals && ...);
+
+template <bool ... vals>
+constexpr inline bool dh_disjunction = (vals || ...);
 
 //function traits
 
